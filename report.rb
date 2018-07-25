@@ -83,7 +83,7 @@ class DifferenceReporter
 
   def report
     table = TTY::Table.new(headers, [meta_info] + doc_rows)
-    table.render(:unicode)
+    table.render(:unicode, resize: true, width: 270)
   end
 end
 
