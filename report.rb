@@ -73,7 +73,7 @@ class DifferenceReporter
 
   def meta_info
     ['numFound'] + results.map do |r|
-      r.data.fetch('response', {})['numFound']
+      r.data.fetch('response', {})['numFound'] || 'ERROR'
     end
   end
 
