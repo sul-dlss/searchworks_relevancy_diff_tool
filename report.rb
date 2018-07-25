@@ -22,7 +22,11 @@ class SearchResult
   end
 
   def docs
-    @docs ||= data['response']['docs'].fill({}, data['response']['docs'].length, 20 - data['response']['docs'].length, )
+    @docs ||= data.fetch('response', {}).fetch('docs', []).fill({}, num_docs, 20 - num_docs)
+  end
+
+  def num_docs
+    data.fetch('response', {}).fetch('docs', []).length
   end
 
   def doc_ids
@@ -69,7 +73,7 @@ class DifferenceReporter
 
   def meta_info
     ['numFound'] + results.map do |r|
-      r.data['response']['numFound']
+      r.data.fetch('response', {})['numFound']
     end
   end
 
