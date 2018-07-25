@@ -22,7 +22,7 @@ class SearchResult
   end
 
   def docs
-    @docs ||= data['response']['docs']
+    @docs ||= data['response']['docs'].fill({}, data['response']['docs'].length, 20 - data['response']['docs'].length, )
   end
 
   def doc_ids
@@ -43,6 +43,8 @@ class DifferenceReporter
 
   def doc_rows
     transposed_data.each_with_index.map do |row, index|
+      next if row.all?(&:empty?)
+
       prefix = if row.map { |r| r['id'] }.uniq.length == 1
         ''
       else
@@ -62,7 +64,7 @@ class DifferenceReporter
       end
 
       [prefix] + row.map { |x| "#{x['id']}: #{x['title_245a_display']}" }
-    end
+    end.compact
   end
 
   def meta_info
